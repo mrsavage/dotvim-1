@@ -32,8 +32,8 @@ if has("gui_running")
   set guioptions-=m
   set guioptions-=L
   set guifont=Anonymous\ Pro:h14
-  colorscheme solarized
   set background=dark
+  colorscheme solarized
 end
 
 " ----------------------------------------------------------------------------
@@ -68,3 +68,4 @@ set list                    " show white space characters and tabs
 set listchars=trail:·,extends:>,precedes:<,tab:»·
 set autochdir               " Auto change working directory
 set ofu=syntaxcomplete#Complete
+
