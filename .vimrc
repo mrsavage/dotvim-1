@@ -187,3 +187,12 @@ let g:EasyGrepRecursive=1
 let g:pylint_onwrite = 0
 let g:pylint_cwindow = 1
 let g:pylint_show_rate = 1
+
+
+"-----------------------------------------------------------------------------
+" Omni Completion
+"-----------------------------------------------------------------------------
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
