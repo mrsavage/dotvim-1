@@ -26,6 +26,12 @@ if has('cmdline_info')
    set showcmd                 " show partial commands in status line
 endif
 
+"" statusline
+if has('statusline')
+  set laststatus=2            " show statusline only if there are > 1 windows
+  set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+endif
+
 "" gui
 if has("gui_running")
   set guioptions-=T
@@ -151,7 +157,7 @@ au BufWinEnter * silent! loadview " make vim load view (state) (folds, cursor, e
 " ----------------------------------------------------------------------------
 
 "" pyflakes plugin
-"" let g:pyflakes_use_quickfix = 0
+let g:pyflakes_use_quickfix = 0
 
 "" vimgrep plugin
 let Grep_Xargs_Options='-0'
@@ -188,7 +194,6 @@ let g:pylint_onwrite = 0
 let g:pylint_cwindow = 1
 let g:pylint_show_rate = 1
 
-
 "-----------------------------------------------------------------------------
 " Omni Completion
 "-----------------------------------------------------------------------------
@@ -196,3 +201,122 @@ autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+
+" ----------------------------------------------------------------------------
+" AUTOCOMMANDS
+" ----------------------------------------------------------------------------
+
+if has("autocmd") && !exists("autocommands_loaded")
+  let autocommands_loaded=1
+
+  " Enable file type detection.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+
+  " Remove ALL autocommands for the current group.
+  autocmd!
+
+  " For all text files set 'textwidth' to 78 characters.
+  "autocmd FileType text setlocal textwidth=78
+  "
+  " Get this plugin from http://www.vim.org/scripts/script.php?script_id=1112
+  " " Pressing "K" takes you to the documentation for the word under the cursor.
+  " autocmd filetype python source ~/.vim/pydoc.vim
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |exe "normal g`\"" |endif
+
+  autocmd FileType javascript set ts=4 sw=4
+  autocmd FileType html set ts=2 sw=2 expandtab
+  autocmd FileType CHANGELOG set ts=4 sw=4 expandtab
+  autocmd FileType cfg set ts=4 sw=4 expandtab
+  autocmd FileType python compiler pylint
+
+  " add cusstom commentstring for nginx
+  autocmd FileType nginx let &l:commentstring='#%s'
+
+  autocmd BufNewFile,BufRead *.js setfiletype javascript
+  autocmd BufNewFile,BufRead *.dtml setfiletype css
+  autocmd BufNewFile,BufRead *.pt setfiletype html
+  autocmd BufNewFile,BufRead *.zcml setfiletype xml
+  autocmd BufNewFile,BufRead *.cpy setfiletype python
+  autocmd BufNewFile,BufRead *.fab setfiletype python
+  autocmd BufNewFile,BufRead *.rst setfiletype rest
+  autocmd BufNewFile,BufRead *.txt setfiletype rest
+  autocmd BufNewFile,BufRead *.cfg setfiletype cfg
+  autocmd BufNewFile,BufRead *.kss setfiletype css
+  autocmd BufNewFile,BufRead error.log setfiletype apachelogs
+  autocmd BufNewFile,BufRead access.log setfiletype apachelogs
+  autocmd BufRead,BufNewFile *.vcl setfiletype vcl
+
+  " abbrevations
+  autocmd FileType python abbr kpdb import pdb; pdb.set_trace()
+  autocmd FileType python abbr kipdb from ipdb import set_trace; set_trace()
+
+  " VIM footers
+  autocmd FileType css abbr kvim /* vim: set ft=css ts=4 sw=4 expandtab : */
+  autocmd FileType javscript abbr kvim /* vim: set ft=javscript ts=4 sw=4 expandtab : */
+  autocmd FileType rst abbr kvim .. vim: set ft=rst ts=4 sw=4 expandtab tw=78 :
+  autocmd FileType python abbr kvim # vim: set ft=python ts=4 sw=4 expandtab :
+  autocmd FileType xml abbr kvim <!-- vim: set ft=xml ts=2 sw=2 expandtab : -->
+  autocmd FileType html abbr kvim <!-- vim: set ft=html ts=2 sw=2 expandtab : -->
+  autocmd FileType changelog abbr kvim vim: set ft=changelog ts=4 sw=4 expandtab :
+  autocmd FileType cfg abbr kvim # vim: set ft=cfg ts=4 sw=4 expandtab :
+  autocmd FileType config abbr kvim # vim: set ft=config ts=4 sw=4 expandtab :
+
+  autocmd FileType * abbr ddate <C-R>=strftime("%Y-%m-%d")<CR>
+  autocmd FileType * abbr nname Daniel Altiparmak<CR>
+
+  autocmd BufNewFile *daily/*.rst 0r ~/.vim/skeletons/daily.rst
+  autocmd BufNewFile *daily/*.rst ks|call Created()|'s
+
+  autocmd BufNewFile *.py 0r ~/.vim/skeletons/skeleton.py
+  autocmd BufNewFile *.py ks|call FileName()|'s
+  autocmd BufNewFile *.py ks|call Created()|'s
+
+  autocmd BufWritePre,FileWritePre * ks|call LastModified()|'s
+
+  " load Templates with kmod
+  autocmd FileType python abbr kmod :r ~/.vim/skeletons/skeleton.py
+  autocmd FileType python abbr khead :r ~/.vim/skeletons/skeleton.head
+  autocmd FileType rst abbr kmod :r ~/.vim/skeletons/skeleton.rst
+  autocmd FileType zpt abbr kmod :r ~/.vim/skeletons/skeleton.pt
+  autocmd FileType changelog abbr kmod :r ~/.vim/skeletons/skeleton.changelog
+  autocmd FileType xml abbr kmod :r ~/.vim/skeletons/skeleton.zcml
+
+  fun FileName()
+    if line("$") > 20
+      let l = 20
+    else
+      let l = line("$")
+    endif
+    exe "1," . l . "g/File Name: /s/File Name: .*/File Name: " .
+    \ expand("%")
+  endfun
+
+  fun Created()
+    if line("$") > 20
+      let l = 20
+    else
+      let l = line("$")
+    endif
+    exe "1," . l . "g/Creation Date: /s/Creation Date: .*/Creation Date: " .
+    \ strftime("%Y %b %d")
+  endfun
+
+  fun LastModified()
+    if line("$") > 20
+      let l = 20
+    else
+      let l = line("$")
+    endif
+    exe "1," . l . "g/Last Modified: /s/Last Modified: .*/Last Modified: " .
+    \ strftime("%Y %b %d")
+  endfun
+
+  augroup END
+endif
