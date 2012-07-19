@@ -249,6 +249,8 @@ if has("autocmd") && !exists("autocommands_loaded")
   autocmd BufNewFile,BufRead *.txt setfiletype rest
   autocmd BufNewFile,BufRead *.cfg setfiletype cfg
   autocmd BufNewFile,BufRead *.kss setfiletype css
+  autocmd BufNewFile,BufRead *.scala set filetype=scala
+  autocmd! Syntax scala source ~/.vim/syntax/scala.vim
   autocmd BufNewFile,BufRead error.log setfiletype apachelogs
   autocmd BufNewFile,BufRead access.log setfiletype apachelogs
   autocmd BufRead,BufNewFile *.vcl setfiletype vcl
