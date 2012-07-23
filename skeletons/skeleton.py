@@ -1,6 +1,6 @@
 #  -*- coding: utf-8 -*-
 #
-#  File 
+#  File Name: file.py
 
 #  Copyright (c) 2003-2012 InQuant GmbH
 #
