@@ -37,7 +37,7 @@ if has("gui_running")
   set guioptions-=T
   set guioptions-=m
   set guioptions-=L
-  set guifont=Monaco:h14
+  set guifont=SourceCodePro-Regular:h15
   set background=dark
   colorscheme solarized
 end
