@@ -202,6 +202,17 @@ autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
+
+"-----------------------------------------------------------------------------
+" NerdTree
+"-----------------------------------------------------------------------------
+"Show hidden files in NerdTree
+let NERDTreeShowHidden=1
+
+"autopen NERDTree and focus cursor in new document
+autocmd VimEnter * NERDTree
+autocmd VimEnter * winc
+
 " ----------------------------------------------------------------------------
 " AUTOCOMMANDS
 " ----------------------------------------------------------------------------
