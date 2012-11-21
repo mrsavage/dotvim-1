@@ -1,0 +1,563 @@
+"       _ _   _                     _             _
+"      | | | (_)                   | |           (_)
+"  __ _| | |_ _ _ __   __ _ _ __ __| |___  __   ___ _ __ ___  _ __ ___
+" / _` | | __| | '_ \ / _` | '__/ _` / __| \ \ / / | '_ ` _ \| '__/ __|
+"| (_| | | |_| | |_) | (_| | | | (_| \__ \  \ V /| | | | | | | | | (__
+" \__,_|_|\__|_| .__/ \__,_|_|  \__,_|___/   \_/ |_|_| |_| |_|_|  \___|
+"              | |
+"              |_|
+
+""" Globals  {
+    set nocompatible
+
+    "" Use comma instead of backslash
+    let mapleader=","
+    let maplocalleader=","
+""" }
+
+""" Vundle init {
+    filetype off
+    set rtp+=~/.vim/bundle/vundle/
+    call vundle#rc()
+    " let Vundle manage Vundle
+    Bundle 'gmarik/vundle'
+
+    """ Ramonski's Vim Bundles {
+        Bundle 'altercation/vim-colors-solarized'
+        Bundle 'spf13/vim-colors'
+        Bundle 'scrooloose/nerdtree'
+        Bundle 'xolox/vim-session'
+        Bundle 'Lokaltog/vim-powerline'
+        Bundle 'scrooloose/nerdcommenter'
+        Bundle 'tpope/vim-fugitive'
+        Bundle 'scrooloose/syntastic'
+        Bundle 'nvie/vim-rst-tables'
+        Bundle 'klen/python-mode'
+        Bundle 'python.vim'
+        Bundle 'python_match.vim'
+        Bundle 'pythoncomplete'
+        Bundle 'tsaleh/vim-align'
+        Bundle 'vim-scripts/vim-coffee-script'
+        Bundle 'flazz/vim-colorschemes'
+        Bundle 'nono/vim-handlebars'
+        Bundle 'tpope/vim-markdown'
+        Bundle 'airblade/vim-rooter'
+        Bundle 'topfunky/PeepOpen-EditorSupport', {'rtp': 'vim-peepopen/'}
+        Bundle 'leshill/vim-json'
+        Bundle 'groenewege/vim-less'
+        Bundle 'pangloss/vim-javascript'
+        Bundle 'briancollins/vim-jst'
+        Bundle 'amirh/HTML-AutoCloseTag'
+        Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
+        Bundle 'matchit.zip'
+        Bundle 'mattn/webapi-vim'
+        Bundle 'mattn/gist-vim'
+        Bundle 'spf13/vim-preview'
+        Bundle 'kien/ctrlp.vim'
+        Bundle 'chrisbra/Recover.vim'
+        Bundle 'tomtom/tlib_vim'
+        Bundle 'MarcWeber/vim-addon-mw-utils'
+        Bundle 'garbas/vim-snipmate'
+        Bundle 'honza/snipmate-snippets'
+        " Source support_function.vim to support snipmate-snippets.
+        if filereadable(expand("~/.vim/bundle/snipmate-snippets/snippets/support_functions.vim"))
+            source ~/.vim/bundle/snipmate-snippets/snippets/support_functions.vim
+        endif
+        Bundle 'Shougo/neocomplcache'
+        Bundle 'Shougo/neosnippet'
+        if executable('ack-grep')
+        let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+            Bundle 'mileszs/ack.vim'
+        elseif executable('ack')
+            Bundle 'mileszs/ack.vim'
+        endif
+        if executable('ctags')
+            Bundle 'majutsushi/tagbar'
+        endif
+        " non github repos
+        Bundle 'git://git.wincent.com/command-t.git'
+    """ }
+
+    " required by vundle
+    filetype plugin indent on
+""" }
+
+
+
+""" Environment settings {
+    if has ("unix") && "Darwin" != system("echo -n \"$(uname)\"")
+        " on Linux use + register for copy-paste
+        set clipboard=unnamedplus
+    else
+        " one mac and windows, use * register for copy-paste
+        set clipboard=unnamed
+    endif
+""" }
+
+
+""" Statusline {
+    if has('statusline')
+        set laststatus=2
+        " Broken down into easily includeable segments
+        set statusline=%<%f\    " Filename
+        set statusline+=%w%h%m%r " Options
+        set statusline+=%{fugitive#statusline()} " Git Hotness
+        set statusline+=\ [%{&ff}/%Y]            " filetype
+        set statusline+=\ [%{getcwd()}]          " current dir
+        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    endif
+""" }
+
+
+""" Ruler {
+    if has('cmdline_info')
+        set ruler                   " show the ruler
+        set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
+        set showcmd                 " show partial commands in status line and
+                                    " selected characters/lines in visual mode
+    endif
+""" }
+
+
+""" GUI Settings {
+    if has('gui_running')
+        set guioptions-=T           " remove the toolbar
+        set lines=40                " 40 lines of text instead of 24,
+        if has("gui_gtk2")
+            set guifont=SourceCodePro-Regular:h15,Andale\ Mono\ Regular\ 16,Menlo\ Regular\ 15,Consolas\ Regular\ 16,Courier\ New\ Regular\ 18
+        else
+            set guifont=SourceCodePro-Regular:h15,Andale\ Mono\ Regular:h16,Menlo\ Regular:h15,Consolas\ Regular:h16,Courier\ New\ Regular:h18
+        endif
+        if has('gui_macvim')
+            set transparency=1          " Make the window slightly transparent
+            let g:macvim_skip_cmd_opt_movement=1
+        endif
+    else
+        if &term == 'xterm' || &term == 'screen'
+            set t_Co=256                 " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+        endif
+        "set term=builtin_ansi       " Make arrow and other keys work
+    endif
+""" }
+
+
+""" Vim UI {
+    if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+        let g:solarized_termcolors=256
+        color solarized                 " load a colorscheme
+    endif
+        let g:solarized_termtrans=1
+        let g:solarized_contrast="high"
+        let g:solarized_visibility="high"
+""" }
+
+
+""" OmniComplete {
+    if has("autocmd") && exists("+omnifunc")
+        autocmd Filetype *
+            \if &omnifunc == "" |
+            \setlocal omnifunc=syntaxcomplete#Complete |
+            \endif
+    endif
+
+    hi Pmenu  guifg=#000000 guibg=#F8F8F8 ctermfg=black ctermbg=Lightgray
+    hi PmenuSbar  guifg=#8A95A7 guibg=#F8F8F8 gui=NONE ctermfg=darkcyan ctermbg=lightgray cterm=NONE
+    hi PmenuThumb  guifg=#F8F8F8 guibg=#8A95A7 gui=NONE ctermfg=lightgray ctermbg=darkcyan cterm=NONE
+
+    " some convenient mappings
+    inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+    inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+    inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+    inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+    inoremap <expr> <C-d>      pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+    inoremap <expr> <C-u>      pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+
+    " automatically open and close the popup menu / preview window
+    au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+    set completeopt=menu,preview,longest
+""" }
+
+
+""" Filetype Workarounds {
+    " Temporary workaround to Better-CSS-Syntax-for-Vim
+    " See https://github.com/ChrisYip/Better-CSS-Syntax-for-Vim/issues/9
+    " for more information
+    autocmd BufNewFile,BufRead *.scss set filetype=css
+    autocmd BufNewFile,BufRead *.sass set filetype=css
+
+    autocmd BufNewFile,BufRead *.js set filetype=javascript
+    autocmd BufNewFile,BufRead *.dtml set filetype=css
+    autocmd BufNewFile,BufRead *.pt set filetype=html
+    autocmd BufNewFile,BufRead *.zcml set filetype=xml
+    autocmd BufNewFile,BufRead *.cpy set filetype=python
+    autocmd BufNewFile,BufRead *.rst set filetype=rest
+    autocmd BufNewFile,BufRead *.txt set filetype=rest
+    autocmd BufNewFile,BufRead *.cfg set filetype=cfg
+    autocmd BufNewFile,BufRead *.kss set filetype=css
+    autocmd BufNewFile,BufRead error.log set filetype=apachelogs
+    autocmd BufNewFile,BufRead access.log set filetype=apachelogs
+    autocmd BufRead,BufNewFile *.vcl set filetype=vcl
+""" }
+
+
+" ----------------------------------------------------------------------------
+" SETTINGS
+" ----------------------------------------------------------------------------
+
+syntax on
+
+set background=dark           " light background
+set shortmess+=filmnrxoOtT    " abbrev. of messages (avoids 'hit enter')
+set expandtab                 " expand tabs to spaces
+set tabstop=4                 " 4 Spaces for tabs
+set shiftwidth=4              " number of spaces use for each step of indent
+set softtabstop=4             " backspace removes tabs
+set autoindent                " copy indent from current line when starting a new line
+set visualbell                " don't beep
+set autoread                  " automatically re-read changed files
+set showmatch                 " briefly jump to a matching bracket
+set incsearch                 " show matching searchterm while typing
+set number                    " show line numbers
+set numberwidth=1             " width for numbers
+set antialias                 " font smoothing
+set foldmethod=manual         " manually fold lines
+set nowrap                    " no line wrapping
+set showtabline=2             " Always show tab bar
+set scrolloff=3               " Keep more context when scrolling off the end of a buffer
+set wildmenu                  " Make tab completion for files/buffers act like bash
+set hlsearch                  " highlight search term
+set smartcase                 " only case sensitiv if they contain upper case characters
+set mousehide                 " Hide the mouse pointer while typing
+set list                      " show white space characters and tabs
+set showmode                  " display the current mode
+set cursorline                " highlight current line
+set tabpagemax=15             " only show 15 tabs
+set listchars=trail:·,extends:>,precedes:<,tab:»· " show whitespaces and tabs
+set viewoptions=folds,options,cursor,unix,slash   " better unix / windows compatibility
+set wildmode=list:longest,full  " command <Tab> completion, list matches, then longest common part, then all.
+
+" ----------------------------------------------------------------------------
+" MAPPINGS
+" ----------------------------------------------------------------------------
+
+" Change Working Directory to that of the current file
+cmap cwd lcd %:p:h
+cmap cd. lcd %:p:h
+
+" write the file
+nmap <f1> :w <cr>
+nmap <f2> :w <cr>
+
+" call make
+nmap <c-f2> :make % <cr>
+
+" Close the Buffer
+" nmap <f4> :bdel <cr>
+nmap <f4> :q <cr>
+
+" Previous Buffer
+nmap <f5> :bp <cr>
+
+" Next Buffer
+nmap <f6> :bn <cr>
+
+" move in split windows with ctrl key
+nmap <c-up> <up>
+nmap <c-down> <down>
+nmap <c-right> <right>
+nmap <c-left> <left>
+nmap <c-s-up> <up> _
+nmap <c-s-down> <down> _
+
+" move in split windows for mac with apple key
+nmap <D-Up> <Up>
+nmap <D-Down> <Down>
+nmap <D-Right> <Right>
+nmap <D-Left> <Left>
+nmap <D-S-Up> <Up>_
+nmap <D-S-Down> <Down>_
+
+" go to next / previous tab
+map  <d-left>  :tabp <cr>
+imap <d-left>  <esc> :tabp <cr> i
+map  <d-right> :tabn <cr>
+imap <d-right> <esc> :tabn <cr> i
+
+" clear the search buffer when hitting return
+:nnoremap <cr> :nohlsearch<cr>/<bs>
+
+" find whitespace
+map <leader>ws :%s/ *$//g<cr><c-o><cr>
+
+" highligths all from import statements
+com! FindLastImport :execute'normal G<cr>' | :execute':normal ?^\(from\|import\)\><cr>'
+map <leader>fi :FindLastImport<cr>
+
+" Map ,e to open files in the same directory as the current file
+map <leader>e :e <C-R>=expand("%:h")<cr>/
+
+" map nolist
+map <leader>nl :set nolist<cr>
+
+" Wrapped lines goes down/up to next row, rather than next line in file.
+nnoremap j gj
+nnoremap k gk
+
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
+
+" Fix home and end keybindings for screen, particularly on mac
+" - for some reason this fixes the arrow keys too. huh.
+map [F $
+imap [F $
+map [H g0
+imap [H g0
+
+" For when you forget to sudo.. Really Write the file.
+cmap w!! w !sudo tee % >/dev/null
+
+" json formatting
+nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+
+" Some helpers to edit mode
+" http://vimcasts.org/e/14
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
+
+
+"Rope Mappings
+map <leader>rd :call RopeGotoDefinition()
+
+" ----------------------------------------------------------------------------
+" PLUGIN CONFIGS
+" ----------------------------------------------------------------------------
+
+"" nerdtree plugin
+map <silent><c-tab> :NERDTreeToggle <cr>
+map <silent><c-f> :NERDTreeFind <cr>
+let g:NERDTreeMapActivateNode="<cr>"
+let g:NERDTreeMapOpenSplit="<s-cr>"
+let g:NERDTreeMapOpenVSplit="<c-cr>"
+let g:NERDTreeIgnore=['\.pyc$', '\.pyo$', '\~$', '\$py.class']
+let g:NERDTreeChDirMode=2
+let g:NERDTreeShowHidden=1
+
+"" python syntax file
+let python_highlight_all=1
+let python_slow_sync=1
+
+"" Vim Session https://github.com/xolox/vim-session
+let g:session_autosave=1
+let g:session_command_aliases=1
+
+" Fugitive
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+
+" PyMode
+let g:pymode_lint_checker = "pyflakes"
+
+" ctrlp
+let g:ctrlp_working_path_mode = 2
+nnoremap <silent> <D-t> :CtrlP<CR>
+nnoremap <silent> <D-r> :CtrlPMRU<CR>
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$' }
+
+
+" AutoClose for HTML
+au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+
+""" neocomplcache {
+    let g:neocomplcache_enable_at_startup = 1
+    let g:neocomplcache_enable_camel_case_completion = 1
+    let g:neocomplcache_enable_smart_case = 1
+    let g:neocomplcache_enable_underbar_completion = 1
+    let g:neocomplcache_min_syntax_length = 3
+    let g:neocomplcache_enable_auto_delimiter = 1
+    let g:neocomplcache_max_list = 15
+    let g:neocomplcache_auto_completion_start_length = 3
+    let g:neocomplcache_force_overwrite_completefunc = 1
+    let g:neocomplcache_snippets_dir='~/.vim/bundle/snipmate-snippets/snippets'
+
+    " AutoComplPop like behavior.
+    let g:neocomplcache_enable_auto_select = 0
+
+    " SuperTab like snippets behavior.
+    imap  <silent><expr><tab>  neocomplcache#sources#snippets_complete#expandable() ? "\<plug>(neocomplcache_snippets_expand)" : (pumvisible() ? "\<c-e>" : "\<tab>")
+    smap  <tab>  <right><plug>(neocomplcache_snippets_jump)
+
+    " Plugin key-mappings.
+    " Ctrl-k expands snippet & moves to next position
+    " <CR> chooses highlighted value
+    imap <C-k>     <Plug>(neocomplcache_snippets_expand)
+    smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+    inoremap <expr><C-g>   neocomplcache#undo_completion()
+    inoremap <expr><C-l>   neocomplcache#complete_common_string()
+    inoremap <expr><CR>    neocomplcache#complete_common_string()
+
+    " <CR>: close popup
+    " <s-CR>: close popup and save indent.
+    inoremap <expr><s-CR> pumvisible() ? neocomplcache#close_popup()"\<CR>" : "\<CR>"
+    inoremap <expr><CR>  pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+
+    " <TAB>: completion.
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    inoremap <expr><s-TAB>  pumvisible() ? "\<C-p>" : "\<TAB>"
+
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+    inoremap <expr><C-y>  neocomplcache#close_popup()
+
+    " Define keyword.
+    if !exists('g:neocomplcache_keyword_patterns')
+      let g:neocomplcache_keyword_patterns = {}
+    endif
+    let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+
+    " Enable omni completion.
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+    autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+
+    " Enable heavy omni completion.
+    if !exists('g:neocomplcache_omni_patterns')
+        let g:neocomplcache_omni_patterns = {}
+    endif
+    let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+    let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+    let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
+    let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
+
+    " For snippet_complete marker.
+    if has('conceal')
+        set conceallevel=2 concealcursor=i
+    endif
+""" }
+
+
+""" SnipMate {
+    " Setting the author var
+    let g:snips_author = 'Daniel Altiparmak <daniel.altiparmak@inquant.de>'
+""" }
+
+""" TagBar {
+    nnoremap <silent> <leader>tb :TagbarToggle<CR>
+""" }
+
+" ----------------------------------------------------------------------------
+" BACKUP
+" ----------------------------------------------------------------------------
+
+" backup, swap, views
+set backup                       " backups are nice ...
+set backupdir=$HOME/.vimbackup// " but not when they clog .
+set directory=$HOME/.vimswap//   " Same for swap files
+"set viewdir=$HOME/.vimviews//    " same for view files
+
+" Creating directories if they don't exist
+silent execute '!mkdir -p $HOME/.vimbackup'
+silent execute '!mkdir -p $HOME/.vimswap'
+
+"silent execute '!mkdir -p $HOME/.vimviews'
+"au BufWinLeave * silent! mkview   " make vim save view (state) (folds, cursor, etc)
+"au BufWinEnter * silent! loadview " make vim load view (state) (folds, cursor, etc)
+
+" ----------------------------------------------------------------------------
+" AUTOCOMMANDS
+" ----------------------------------------------------------------------------
+
+if has("autocmd") && !exists("autocommands_loaded")
+    let autocommands_loaded=1
+
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid or when inside an event handler
+    " (happens when dropping a file on gvim).
+    autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal g`\"" |
+      \ endif
+
+    " add cusstom commentstring for nginx
+    autocmd FileType nginx let &l:commentstring='#%s'
+    autocmd FileType eco let &l:commentstring='<!-- %s -->'
+
+    " Rope
+    autocmd FileType python let ropevim_guess_project=1
+
+    " abbrevations
+    autocmd FileType python abbr kpdb import pdb; pdb.set_trace()
+    autocmd FileType python abbr kipdb from ipdb import set_trace; set_trace()
+
+    " VIM footers
+    autocmd FileType css abbr kvim /* vim: set ft=css ts=4 sw=4 expandtab : */
+    autocmd FileType javascript abbr kvim /* vim: set ft=javscript ts=4 sw=4 expandtab : */
+    autocmd FileType rst abbr kvim .. vim: set ft=rst ts=4 sw=4 expandtab tw=78 :
+    autocmd FileType python abbr kvim # vim: set ft=python ts=4 sw=4 expandtab :
+    autocmd FileType xml abbr kvim <!-- vim: set ft=xml ts=2 sw=2 expandtab : -->
+    autocmd FileType html abbr kvim <!-- vim: set ft=html ts=2 sw=2 expandtab : -->
+    autocmd FileType changelog abbr kvim vim: set ft=changelog ts=4 sw=4 expandtab :
+    autocmd FileType cfg abbr kvim # vim: set ft=cfg ts=4 sw=4 expandtab :
+    autocmd FileType config abbr kvim # vim: set ft=config ts=4 sw=4 expandtab :
+    autocmd FileType coffee abbr kvim # vim: set ft=coffee ts=4 sw=4 expandtab :
+
+    autocmd FileType * abbr ddate <C-R>=strftime("%Y-%m-%d")<CR>
+    autocmd FileType * abbr nname Daniel Altiparmak<CR>
+    autocmd FileType * abbr mmail daniel.altiparmak@inquant.de<CR>
+
+    autocmd BufNewFile *daily/*.rst 0r ~/.vim/skeletons/daily.rst
+    autocmd BufNewFile *.py ks|call FileName()|'s
+    autocmd BufNewFile *.py ks|call Created()|'s
+    autocmd BufWritePre,FileWritePre * ks|call LastModified()|'s
+
+    autocmd FileType coffee abbr kmod :r ~/.vim/skeletons/skeleton.coffee
+    autocmd FileType python abbr kmod :r ~/.vim/skeletons/skeleton.py
+    autocmd FileType python abbr khead :r ~/.vim/skeletons/skeleton.head
+    autocmd FileType rst abbr kmod :r ~/.vim/skeletons/skeleton.rst
+    autocmd FileType zpt abbr kmod :r ~/.vim/skeletons/skeleton.pt
+    autocmd FileType html abbr kmod :r ~/.vim/skeletons/skeleton.html
+    autocmd FileType changelog abbr kmod :r ~/.vim/skeletons/skeleton.changelog
+    autocmd FileType xml abbr kmod :r ~/.vim/skeletons/skeleton.zcml
+
+    fun FileName()
+        if line("$") > 20
+            let l = 20
+        else
+            let l = line("$")
+        endif
+        exe "1," . l . "g/File Name: /s/File Name: .*/File Name: " .
+        \ expand("%")
+    endfun
+
+    fun Created()
+        if line("$") > 20
+            let l = 20
+        else
+            let l = line("$")
+        endif
+        exe "1," . l . "g/Creation Date: /s/Creation Date: .*/Creation Date: " .
+        \ strftime("%Y %b %d")
+    endfun
+
+    fun LastModified()
+        if line("$") > 20
+            let l = 20
+        else
+            let l = line("$")
+        endif
+        exe "1," . l . "g/Last Modified: /s/Last Modified: .*/Last Modified: " .
+        \ strftime("%Y %b %d")
+    endfun
+endif
