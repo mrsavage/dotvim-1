@@ -1,10 +1,8 @@
-#  -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
-#  File Name: file.py
-#  Creation Date: 2012 Jul 24
-#  Last Modified: 2012 Jul 24
-
-#  Copyright (c) 2003-2012 InQuant GmbH
+# File: <+FILE NAME+>
+#
+# Copyright (c) InQuant GmbH
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -20,8 +18,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-__author__ = 'Daniel Altiparmak <daniel.altiparmak@inquant.de>'
+__author__ = 'Hans-Peter Locher <hans-peter.locher@inquant.de>'
 __docformat__ = 'plaintext'
 
 # vim: set ft=python ts=4 sw=4 expandtab :
