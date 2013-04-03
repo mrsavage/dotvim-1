@@ -26,10 +26,7 @@
         Bundle 'altercation/vim-colors-solarized'
         Bundle 'spf13/vim-colors'
         Bundle 'scrooloose/nerdtree'
-        Bundle 'xolox/vim-session'
-        Bundle 'Lokaltog/vim-powerline'
         Bundle 'scrooloose/nerdcommenter'
-        Bundle 'tpope/vim-fugitive'
         Bundle 'scrooloose/syntastic'
         Bundle 'nvie/vim-rst-tables'
         Bundle 'klen/python-mode'
@@ -41,20 +38,13 @@
         Bundle 'flazz/vim-colorschemes'
         Bundle 'nono/vim-handlebars'
         Bundle 'tpope/vim-markdown'
-        Bundle 'airblade/vim-rooter'
-        Bundle 'topfunky/PeepOpen-EditorSupport', {'rtp': 'vim-peepopen/'}
         Bundle 'leshill/vim-json'
         Bundle 'groenewege/vim-less'
         Bundle 'pangloss/vim-javascript'
         Bundle 'briancollins/vim-jst'
-        Bundle 'amirh/HTML-AutoCloseTag'
         Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
-        Bundle 'matchit.zip'
-        Bundle 'mattn/webapi-vim'
-        Bundle 'mattn/gist-vim'
         Bundle 'spf13/vim-preview'
         Bundle 'kien/ctrlp.vim'
-        Bundle 'chrisbra/Recover.vim'
         Bundle 'tomtom/tlib_vim'
         Bundle 'MarcWeber/vim-addon-mw-utils'
         Bundle 'garbas/vim-snipmate'
@@ -94,19 +84,6 @@
     endif
 """ }
 
-
-""" Statusline {
-    if has('statusline')
-        set laststatus=2
-        " Broken down into easily includeable segments
-        set statusline=%<%f\    " Filename
-        set statusline+=%w%h%m%r " Options
-        set statusline+=%{fugitive#statusline()} " Git Hotness
-        set statusline+=\ [%{&ff}/%Y]            " filetype
-        set statusline+=\ [%{getcwd()}]          " current dir
-        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-    endif
-""" }
 
 
 """ Ruler {
@@ -561,3 +538,6 @@ if has("autocmd") && !exists("autocommands_loaded")
         \ strftime("%Y %b %d")
     endfun
 endif
+
+" disable autofolding
+set nofoldenable
