@@ -21,6 +21,10 @@
     call vundle#rc()
     " let Vundle manage Vundle
     Bundle 'gmarik/vundle'
+    """ HP's Vim Bundles {
+        Bundle 'mrsavage/vimspells.git'
+
+    """ }
 
     """ Ramonski's Vim Bundles {
         Bundle 'altercation/vim-colors-solarized'
